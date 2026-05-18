@@ -1,0 +1,13 @@
+name: Lab 1 - Primer workflow básico
+
+on: [push]
+
+jobs:
+  basic_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Imprimir mensaje personalizado
+        run: echo "¡Hola! Este es el primer workflow básico del Lab 1."
+        
+      - name: Listar el contenido del directorio
+        run: ls -la
