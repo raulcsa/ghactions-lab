@@ -1,0 +1,32 @@
+name: Node.js Consumer Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  call-reusable-workflow-18:
+    uses: ./.github/workflows/reusable-node-pipeline.yml
+    with:
+      node-version: '18.x'
+      artifact-name: 'my-node-app'
+  
+  call-reusable-workflow-20:
+    uses: ./.github/workflows/reusable-node-pipeline.yml
+    with:
+      node-version: '20.x'
+      artifact-name: 'my-node-app'
+
+  post-build-logic:
+    needs: [call-reusable-workflow-18, call-reusable-workflow-20]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print Outputs
+        run: |
+          echo "Node 18 pipeline ran with Node.js version: ${{ needs.call-reusable-workflow-18.outputs.node-version-used }}"
+          echo "Node 20 pipeline ran with Node.js version: ${{ needs.call-reusable-workflow-20.outputs.node-version-used }}"
+          echo "All builds completed successfully!"

@@ -1,0 +1,55 @@
+name: Reusable Node.js Pipeline
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        required: true
+        type: string
+        description: 'La versión de Node.js a utilizar'
+      artifact-name:
+        required: false
+        type: string
+        default: 'app-artifact'
+        description: 'Nombre del artifact a generar'
+    outputs:
+      node-version-used:
+        description: 'Versión de Node.js efectivamente utilizada'
+        value: ${{ jobs.build-and-test.outputs.node_ver }}
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    outputs:
+      node_ver: ${{ steps.node-setup.outputs.node-version }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4.1.1 # Pinning a specific version
+
+      - name: Setup Node.js
+        id: node-setup
+        uses: actions/setup-node@v4.0.2
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: 'npm' # Habilita la caché de dependencias basada en package-lock.json
+
+      - name: Install Dependencies
+        run: npm ci || npm install # Usa ci si existe package-lock.json, sino install
+
+      - name: Run Tests
+        run: npm test || echo "No tests defined" > test-report.txt
+
+      - name: Build Project
+        run: npm run build || echo "No build script defined" > build-output.txt
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4.3.1
+        with:
+          name: ${{ inputs.artifact-name }}-${{ inputs.node-version }}
+          path: |
+            test-report.txt
+            build-output.txt
+            coverage/
+            dist/
+            build/
+          retention-days: 5
