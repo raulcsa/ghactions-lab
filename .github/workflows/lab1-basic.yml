@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Imprimir mensaje personalizado
-        run: echo "¡Hola! Este es el primer workflow básico del Lab 1."
+        run: echo "¡Hola! Este es el primer workflow básico del Lab 1 y 2."
         
       - name: Listar el contenido del directorio
         run: ls -la
