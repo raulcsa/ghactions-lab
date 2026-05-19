@@ -1,0 +1,23 @@
+{
+  "name": "ghactions-lab",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raulcsa/ghactions-lab.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/raulcsa/ghactions-lab/issues"
+  },
+  "homepage": "https://github.com/raulcsa/ghactions-lab#readme",
+  "devDependencies": {
+    "jest": "^30.4.2"
+  }
+}
